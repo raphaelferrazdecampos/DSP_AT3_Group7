@@ -102,7 +102,7 @@ class DateColumn:
         df_frequency = self.serie.value_counts().to_frame()
         df_frequency = df_frequency.reset_index()
         df_frequency.columns = ['value', 'occurrence']
-        df_frequency['percentage'] = df_frequency.occurrence.apply(lambda x: x / len(df_frequency))
+        df_frequency['percentage'] = df_frequency.occurrence.apply(lambda x: round(x / DateColumn.serie.count()*100,1))
         df_frequency = df_frequency.head(20)
         return df_frequency
 
