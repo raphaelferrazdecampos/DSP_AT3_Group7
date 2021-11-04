@@ -2,45 +2,44 @@
 import unittest
 from datetime import DateColumn
 import pandas as pd
-
-#file_url = 'C:/Users/jinlei.han/Downloads/uber-raw-data-sep14.csv.gz'
-#df = pd.read_csv(file_url, nrows=1000, parse_dates=['Date/Time'])
-#col_name1 = 'Date/Time'
-
-testDate = DateColumn()
+import numpy as np
 
 class TestDateColumnMethods(unittest.TestCase):
     def setUp(self):
-        ############
+        rng = pd.date_range('2021-01-01', periods=100, freq='T')
+        df = pd.DataFrame({ 'Date': rng, 'Val': np.random.randn(len(rng)) })
+        self.date_column = df['Date']
+        self.testDate = DateColumn(df,'Date')
+
     def test_get_name(self):
-        self.assertEqual(testDate.get_name(),"Date/Time")
+        self.assertEqual(self.testDate.get_name(),"Date")
 
     def test_get_unique(self):
-        self.assertEqual(testDate.get_unique(),728)
+        self.assertEqual(self.testDate.get_unique(),100)
 
     def test_get_missing(self):
-        self.assertEqual(testDate.get_missing(),0)
+        self.assertEqual(self.testDate.get_missing(),0)
 
     def test_get_weekend(self):
-        self.assertEqual(testDate.get_weekend(),0)
+        self.assertEqual(self.testDate.get_weekend(),0)
 
     def test_get_weekday(self):
-        self.assertEqual(testDate.get_weekday(),1000)
+        self.assertEqual(self.testDate.get_weekday(),100)
 
     def test_get_future(self):
-        self.assertEqual(testDate.get_future(),0)
+        self.assertEqual(self.testDate.get_future(),0)
 
     def test_get_empty_1900(self):
-        self.assertEqual(testDate.get_empty_1900(),0)
+        self.assertEqual(self.testDate.get_empty_1900(),0)
 
     def test_get_empty_1970(self):
-        self.assertEqual(testDate.get_empty_1970(),0)
+        self.assertEqual(self.testDate.get_empty_1970(),0)
 
     def test_get_min(self):
-        self.assertEqual(testDate.get_min(),'2014-09-01 00:01:00')
+        self.assertEqual(self.testDate.get_min(),'2021-01-01 00:00:00')
 
     def test_get_max(self):
-        self.assertEqual(testDate.get_max(),'2014-09-02 11:18:00')
+        self.assertEqual(self.testDate.get_max(),'2021-01-01 01:39:00')
 
 if __name__ == '__main__':
     unittest.main()
