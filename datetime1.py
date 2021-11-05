@@ -2,7 +2,7 @@ from os import name
 import streamlit as st
 from dataclasses import dataclass
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 @dataclass
@@ -90,10 +90,10 @@ class DateColumn:
         """
         count_bar = self.serie.value_counts()
         count_bar=count_bar.reset_index(inplace=False)
-        f=plt.figure(figsize=(10,5))
-        ax=f.add_subplot(1,1,1)
-        plt.bar(count_bar.iloc[:,0], count_bar.iloc[:,1])
-        return f
+        #f=plt.figure(figsize=(10,5))
+        #ax=f.add_subplot(1,1,1)
+        #plt.bar(count_bar.iloc[:,0], count_bar.iloc[:,1])
+        return count_bar
 
     def get_frequent(self):
         """
@@ -102,7 +102,7 @@ class DateColumn:
         df_frequency = self.serie.value_counts().to_frame()
         df_frequency = df_frequency.reset_index()
         df_frequency.columns = ['value', 'occurrence']
-        df_frequency['percentage'] = df_frequency.occurrence.apply(lambda x: round(x / DateColumn.serie.count()*100,1))
+        df_frequency['percentage'] = df_frequency.occurrence.apply(lambda x: x / len(df_frequency))
         df_frequency = df_frequency.head(20)
         return df_frequency
 
